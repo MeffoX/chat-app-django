@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+{% if request.user.is_authenticated %}
+
+{% for message in messages %}
+<div>
+  <div><b>{{ message.author.first_name }}:</b> {{ message.text }} <span class="message-date">({{ message.created_at }}<span>)</div>        </div>
+{% endfor %}
+
+<form action="/chat/" method="post">
+    {% csrf_token %}
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <input class="mdl-textfield__input" name="textmessage" type="text" id="sample3">
+      <label class="mdl-textfield__label" for="sample3">Text...</label>
+    </div>
+    <button class="mdl-button mdl-js-button mdl-button--primary">
+      Send
+    </button>
+  </form>
+
+  {% else %}
+  <h2>Please Login</h2>
+  <a href="/login/">Here</a>
+  {% endif %}
+
+
+  {% endblock %}
