@@ -12,32 +12,33 @@
 
 
 <script>
-  async function sendMessage() {
-    let fd = new FormData();
-    let token = '{{ csrf_token }}';
-    let messageText = messageField.value;
+async function sendMessage() {
+  let fd = new FormData();
+  let token = '{{ csrf_token }}';
+  let messageText = document.getElementById('messageField').value;
 
-    fd.append('textmessage', messageText);
-    fd.append('csrfmiddlewaretoken', token);
-    try {
-      messageContainer.innerHTML+= `
-        <div class="color-gray" id="deleteMessage"><b>{{ request.user.first_name }}:</b> {{ messageText }}</div>
-        `;
 
-      let response = await fetch('/chat/', {
-        method: 'POST',
-        body: fd
-      });
-      let json = await response.json();
-      console.log('JSON is', json);
-      document.getElementById('deleteMessage').remove();
-      messageContainer.innerHTML+= `
-        <div><b>{{ request.user.first_name }}:</b> {{ messageText }}</div>
-        `;
-    } catch(e) {
-      console.error('Error', e);
-    }
+  messageContainer.innerHTML += `
+    <div><b>{{ request.user.first_name }}:</b> ${messageText}</div>
+  `;
+
+  document.getElementById('messageField').value = '';
+
+  fd.append('textmessage', messageText);
+  fd.append('csrfmiddlewaretoken', token);
+
+  try {
+    let response = await fetch('/chat/', {
+      method: 'POST',
+      body: fd
+    });
+    let json = await response.json();
+    console.log('JSON is', json);
+  } catch(e) {
+    console.error('Error', e);
   }
+}
+
 </script>
 
 <form onsubmit="sendMessage(); return false;" method="post">
