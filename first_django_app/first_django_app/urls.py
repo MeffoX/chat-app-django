@@ -17,10 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from chat.views import index, login__view
+from chat.views import index, login__view, logout_view, register__view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('chat/', index),
+    path('', login__view),
     path('login/', login__view),
+    path('logout/', logout_view),
+    path('register/', register__view),
 ]

@@ -2,7 +2,40 @@
     padding: 100px 100px;
 }
 
+.logout {
+  right: 24px;
+  position: fixed;
+}
+
 .color-gray {
   color: rgba(0, 0, 0, 0.4);
   font-size: 10px;
+}
+
+.chat-submit {  
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  color: #5A5EB9;
+}
+
+.my-message {
+  text-align: right;
+  background-color: aquamarine;
+}
+
+.other-message {
+  text-align: left;
+  background-color: bisque;
+}
+
+
+/* AUTHENTIFICATION */
+
+.is-invalid .mdl-textfield__input {
+  border-bottom: 1px solid #d50000 !important;
+}
+.mdl-textfield__error {
+  display: none;
+  color: #d50000;
 }

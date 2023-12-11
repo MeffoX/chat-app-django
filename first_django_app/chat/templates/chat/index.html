@@ -1,55 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
 
+<script type="text/javascript">
+  let userName = "{{ request.user.first_name }}";
+</script>
+
 
 {% if request.user.is_authenticated %}
 
 <div id="messageContainer">
   {% for message in messages %}
-    <div><b>{{ message.author.first_name }}:</b> {{ message.text }} <span class="message-date">({{ message.created_at }}<span>)</div>
+    <div class="{% if message.author == request.user %}my-message{% else %}other-message{% endif %}">
+      <b>{{ message.author.username }}:</b> {{ message.text }}
+      <span class="message-date">({{ message.created_at }})</span>
+    </div>
   {% endfor %}
 </div>
 
-
-<script>
-async function sendMessage() {
-  let fd = new FormData();
-  let token = '{{ csrf_token }}';
-  let messageText = document.getElementById('messageField').value;
-
-
-  messageContainer.innerHTML += `
-    <div><b>{{ request.user.first_name }}:</b> ${messageText}</div>
-  `;
-
-  document.getElementById('messageField').value = '';
-
-  fd.append('textmessage', messageText);
-  fd.append('csrfmiddlewaretoken', token);
-
-  try {
-    let response = await fetch('/chat/', {
-      method: 'POST',
-      body: fd
-    });
-    let json = await response.json();
-    console.log('JSON is', json);
-  } catch(e) {
-    console.error('Error', e);
-  }
-}
-
-</script>
 
 <form onsubmit="sendMessage(); return false;" method="post">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <input class="mdl-textfield__input" name="textmessage" type="text" id="messageField">
-      <label class="mdl-textfield__label" for="messageField">Text...</label>
+      <label class="mdl-textfield__label" for="messageField">Send a message...</label>
     </div>
-    <button class="mdl-button mdl-js-button mdl-button--primary">
-      Send
-    </button>
+    <button class="chat-submit" id="chatSubmit"><i class="material-icons">send</i></button>
   </form>
 
   {% else %}
