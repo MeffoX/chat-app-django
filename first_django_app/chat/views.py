@@ -16,6 +16,7 @@ def index(request):
         new_message = Message.objects.create(text=request.POST['textmessage'], chat=myChat, author=request.user, receiver=request.user)
         serialized_obj = serializers.serialize('json', [new_message, ])
         return JsonResponse(serialized_obj[1:-1], safe=False)
+    
     chatMessages = Message.objects.filter(chat__id=1)
     return render(request, 'chat/index.html', {'messages': chatMessages})
 
@@ -55,3 +56,16 @@ def register__view(request):
         return HttpResponseRedirect('/chat/')
 
     return render(request, 'auth/register.html')
+
+# In Ihrer views.py
+@login_required(login_url='/login/')
+def chat_channel(request, channel_id):
+    try:
+        # Annahme: Jeder Channel ist ein eigenes Chat-Objekt
+        chat = Chat.objects.get(id=channel_id)
+        chatMessages = Message.objects.filter(chat=chat)
+    except Chat.DoesNotExist:
+        chatMessages = []
+        # Optional: Meldung hinzufügen, wenn der Channel nicht existiert
+
+    return render(request, 'chat/channel.html', {'messages': chatMessages, 'channel_id': channel_id})

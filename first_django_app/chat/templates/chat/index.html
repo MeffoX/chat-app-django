@@ -2,7 +2,7 @@
 {% block content %}
 
 <script type="text/javascript">
-  let userName = "{{ request.user.first_name }}";
+  let userName = "{{ request.user.username }}";
 </script>
 
 
@@ -11,17 +11,18 @@
 <div id="messageContainer">
   {% for message in messages %}
     <div class="{% if message.author == request.user %}my-message{% else %}other-message{% endif %}">
-      <b>{{ message.author.username }}:</b> {{ message.text }}
-      <span class="message-date">({{ message.created_at }})</span>
+      <b>{{ message.author.username }}:</b>
+      <span class="message-date">({{ message.created_at }})</span><br>
+      {{ message.text }}
     </div>
   {% endfor %}
 </div>
 
 
-<form onsubmit="sendMessage(); return false;" method="post">
+<form class="send-message" onsubmit="sendMessage(); return false;" method="post">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" name="textmessage" type="text" id="messageField">
+      <input class="mdl-textfield__input" name="textmessage" type="text" id="messageField" minlength="1" maxlength="100">
       <label class="mdl-textfield__label" for="messageField">Send a message...</label>
     </div>
     <button class="chat-submit" id="chatSubmit"><i class="material-icons">send</i></button>
