@@ -43,22 +43,4 @@
     </div>
 </div>
 
-
-<script>
-    function validateLoginForm() {
-    let username = document.getElementById("login").value;
-    let password = document.getElementById("password").value;
-    let errorMessage = document.getElementById("login-error-message");
-
-    if (username === "" || password === "") {
-        errorMessage.innerText = "Name or password is invalide!";
-        errorMessage.style.display = "block";
-        return false;
-    }
-    errorMessage.style.display = "none";
-    return true;
-}
-</script>
-
-
 {% endblock %}

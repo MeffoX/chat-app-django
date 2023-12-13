@@ -10,6 +10,12 @@ from django.contrib import messages
 
 @login_required(login_url='/login/')
 def index(request):
+    """
+        Main chat view. Requires login to access.
+
+        On POST request: Receives a message and saves it to the database. Returns the serialized message as JSON.
+        On GET request: Retrieves all messages for a specific chat and renders them in the chat template.
+    """
     if request.method == 'POST':
         print("Received data" + request.POST['textmessage'])
         myChat = Chat.objects.get(id=1)
@@ -22,6 +28,12 @@ def index(request):
 
 
 def login__view(request):
+    """
+        Handles user login.
+
+        On POST request: Authenticates the user and redirects to the next page or chat view.
+        On GET request: Renders the login page.
+    """
     redirect = request.GET.get('next', '/chat/')
     if request.method == 'POST':
         user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
@@ -35,11 +47,20 @@ def login__view(request):
 
 
 def logout_view(request):
+    """
+        Handles user logout and redirects to the login page.
+    """
     logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/login/')
 
 
 def register__view(request):
+    """
+        Handles new user registration.
+
+        On POST request: Registers a new user and redirects to the chat view.
+        On GET request: Renders the registration page.
+    """
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -56,16 +77,3 @@ def register__view(request):
         return HttpResponseRedirect('/chat/')
 
     return render(request, 'auth/register.html')
-
-# In Ihrer views.py
-@login_required(login_url='/login/')
-def chat_channel(request, channel_id):
-    try:
-        # Annahme: Jeder Channel ist ein eigenes Chat-Objekt
-        chat = Chat.objects.get(id=channel_id)
-        chatMessages = Message.objects.filter(chat=chat)
-    except Chat.DoesNotExist:
-        chatMessages = []
-        # Optional: Meldung hinzufügen, wenn der Channel nicht existiert
-
-    return render(request, 'chat/channel.html', {'messages': chatMessages, 'channel_id': channel_id})

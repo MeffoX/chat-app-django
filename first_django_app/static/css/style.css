@@ -3,11 +3,23 @@ body {
   background-color: #d5d7d9;
 }
 
+a {
+  cursor: pointer;
+}
+
 .page-content {
     padding: 32px 160px;
     display: flex;
     justify-content: center;
     flex-direction: column;
+}
+
+.center-align {
+  padding: 32px 160px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 @media (max-width:560px){
@@ -17,8 +29,9 @@ body {
 }
 
 .logout {
-  right: 24px;
+  right: 64px;
   position: fixed;
+  cursor: pointer;
 }
 
 .color-gray {
@@ -34,10 +47,16 @@ body {
 }
 
 #messageContainer {
+  background-color: #dfe3e7;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
+  max-height: 75vh;
+  overflow-y: auto;
+  border: 1px solid rgba(0, 0, 0, 0.1 );
+  border-radius: 16px;
+  padding: 2px;
 }
 
 .my-message {
@@ -79,4 +98,19 @@ form.send-message {
 .mdl-textfield__error {
   display: none;
   color: #d50000;
+}
+
+.mdl-card {
+  width: 310px;
+}
+
+.register-head {
+  display: flex;
+  align-items: center;
+  width: 300px;
+  justify-content: space-between;
+}
+
+.arrow_back {
+  color: white;
 }
